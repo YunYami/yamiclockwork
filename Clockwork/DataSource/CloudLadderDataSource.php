@@ -19,7 +19,7 @@ class CloudLadderDataSource extends DataSource
 	public function resolve(Request $request)
 	{
 		if ($this->requestId && $this->data) {
-			$request->cloudLadderData = array_merge($request->cloudLadderData, ['request_id' => $this->requestId, 'data' => $this->data]);
+			$request->cloudLadderData = array_merge($request->cloudLadderData, [['request_id' => $this->requestId, 'data' => $this->data]]);
 			$this->data = [];
 			$this->requestId = '';
 		}
