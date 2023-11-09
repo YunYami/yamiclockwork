@@ -12,25 +12,66 @@ use Clockwork\Request\Request;
  */
 class CloudLadderDataSource extends DataSource
 {
-	protected $data = [];
+	protected $requestData = [];
 
-	protected $requestId = '';
-
+	/**
+	 * 将属性中的值赋值到request中的属性，作为持久化所必须的
+	 *
+	 * @param  Request  $request
+	 * @author Wumeng wumeng@gupo.onaliyun.com
+	 * @since 2023-11-09 17:41
+	 */
 	public function resolve(Request $request)
 	{
-		if ($this->requestId && $this->data) {
-			$request->cloudLadderData = array_merge($request->cloudLadderData, [['request_id' => $this->requestId, 'data' => $this->data]]);
-			$this->data = [];
-			$this->requestId = '';
+		if ($this->requestData) {
+			$request->cloudLadderData = $this->requestData;
 		}
 	}
 
-	public function writeData($data, $requestId)
+	/**
+	 * 将日志记录在属性中
+	 *
+	 * @param $dataArr
+	 * @param $requestId
+	 * @author Wumeng wumeng@gupo.onaliyun.com
+	 * @since 2023-11-09 17:41
+	 */
+	public function writeData($dataArr, $requestId)
 	{
-		if (!is_array($data) || !is_string($requestId)) {
-			return;
-		}
-		$this->data = $data;
-		$this->requestId = $requestId;
+		$this->requestData[] = ['request_id' => $requestId, 'data' => $dataArr];
+	}
+
+	/**
+	 * 获取总览所需要的数据格式
+	 *
+	 * @param  string  $type
+	 * @param  string  $name
+	 * @param  float  $timestamp
+	 * @return array
+	 * @author Wumeng wumeng@gupo.onaliyun.com
+	 * @since 2023-11-09 17:40
+	 */
+	public function getData(string $type, string $name, float $timestamp = 0): array
+	{
+		return [
+			$type   => $timestamp ?? microtime(true),
+			"color" => "cyan",
+			"name"  => $name,
+		];
+	}
+
+	/**
+	 * 在总览上进行记录
+	 *
+	 * @param  string  $fullUrl
+	 * @param  string  $type
+	 * @param  float  $timestamp
+	 * @author Wumeng wumeng@gupo.onaliyun.com
+	 * @since 2023-11-09 17:40
+	 */
+	public function performanceWrite(string $fullUrl, string $type, float $timestamp = 0): void
+	{
+		$data = $this->getData($type, $fullUrl, $timestamp);
+		clock()->event($fullUrl, $data)->$type();
 	}
 }
