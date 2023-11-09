@@ -1,6 +1,7 @@
 <?php namespace Clockwork\Support\Laravel;
 
 use Clockwork\Clockwork;
+use Clockwork\DataSource\CloudLadderDataSource;
 use Clockwork\Authentication\AuthenticatorInterface;
 use Clockwork\DataSource\EloquentDataSource;
 use Clockwork\DataSource\LaravelCacheDataSource;
@@ -206,6 +207,10 @@ class ClockworkServiceProvider extends ServiceProvider
 		$this->app->singleton('clockwork.xdebug', function ($app) {
 			return new XdebugDataSource;
 		});
+
+		$this->app->singleton('clockwork.cloud_ladder', function ($app) {
+			return new CloudLadderDataSource;
+		});
 	}
 
 	// Set up aliases for all Clockwork parts so they can be resolved by type-hinting
@@ -226,6 +231,7 @@ class ClockworkServiceProvider extends ServiceProvider
 		$this->app->alias('clockwork.redis', LaravelRedisDataSource::class);
 		$this->app->alias('clockwork.swift', SwiftDataSource::class);
 		$this->app->alias('clockwork.xdebug', XdebugDataSource::class);
+		$this->app->alias('clockwork.cloud_ladder', CloudLadderDataSource::class);
 	}
 
 	// Register event listeners

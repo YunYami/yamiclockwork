@@ -149,6 +149,7 @@ class ClockworkSupport
 			->addDataSource(new PhpDataSource)
 			->addDataSource($this->frameworkDataSource());
 
+		$clockwork->addDataSource($this->app['clockwork.cloud_ladder']);
 		if ($this->isFeatureEnabled('database')) $clockwork->addDataSource($this->app['clockwork.eloquent']);
 		if ($this->isFeatureEnabled('cache')) $clockwork->addDataSource($this->app['clockwork.cache']);
 		if ($this->isFeatureEnabled('redis')) $clockwork->addDataSource($this->app['clockwork.redis']);
