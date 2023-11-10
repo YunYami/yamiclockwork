@@ -32,13 +32,13 @@ class CloudLadderDataSource extends DataSource
 	 * 将日志记录在属性中
 	 *
 	 * @param $dataArr
-	 * @param $requestId
+	 * @param $spanId
 	 * @author Wumeng wumeng@gupo.onaliyun.com
 	 * @since 2023-11-09 17:41
 	 */
-	public function writeData($dataArr, $requestId)
+	public function writeData($dataArr, $spanId)
 	{
-		$this->requestData[] = ['request_id' => $requestId, 'data' => $dataArr];
+		$this->requestData[] = ['span_id' => $spanId, 'data' => $dataArr];
 	}
 
 	/**
