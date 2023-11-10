@@ -40,12 +40,13 @@ class ClockworkServiceProvider extends ServiceProvider
 		// If Clockwork is disabled, return before registering middleware or routes
 		if (! $this->app['clockwork.support']->isEnabled()) return;
 
-		$this->registerRoutes();
+		// 安全考虑，注释掉 接入方自身查看数据面板的相关路由
+//		$this->registerRoutes();
 
 		// register the Clockwork Web UI routes
-		if ($this->app['clockwork.support']->isWebEnabled()) {
-			$this->registerWebRoutes();
-		}
+//		if ($this->app['clockwork.support']->isWebEnabled()) {
+//			$this->registerWebRoutes();
+//		}
 	}
 
 	public function register()
